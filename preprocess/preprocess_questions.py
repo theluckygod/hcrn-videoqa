@@ -40,7 +40,7 @@ if __name__ == '__main__':
             os.makedirs('data/{}'.format(args.dataset))
         msrvtt_qa.process_questions(args)
     elif args.dataset == 'msvd-qa':
-        args.annotation_file = '/ceph-g/lethao/datasets/msvd/MSVD-QA/{}_qa.json'.format(args.mode)
+        args.annotation_file = '/content/MSVD-QA/{}_qa.json'.format(args.mode)
         # check if data folder exists
         if not os.path.exists('data/{}'.format(args.dataset)):
             os.makedirs('data/{}'.format(args.dataset))

@@ -7,7 +7,7 @@ exp_name: 'expTGIF-QAFrameQA'
 train:
   lr: 0.0001
   batch_size: 32
-  restore: False
+  restore: True
   max_epochs: 25
   word_dim: 300
   module_dim: 512
@@ -28,4 +28,4 @@ dataset:
   name: 'tgif-qa'
   question_type: 'frameqa'
   data_dir: 'data/tgif-qa/frameqa'
-  save_dir: 'results/'
+  save_dir: '/content/drive/MyDrive/DFColab/VideoQA/results/'

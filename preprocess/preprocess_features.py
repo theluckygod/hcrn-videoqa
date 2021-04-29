@@ -253,9 +253,9 @@ if __name__ == '__main__':
                     args.outfile.format(args.dataset, args.dataset, args.feature_type))
 
     elif args.dataset == 'msvd-qa':
-        args.annotation_file = '/ceph-g/lethao/datasets/msvd/MSVD-QA/{}_qa.json'
-        args.video_dir = '/ceph-g/lethao/datasets/msvd/MSVD-QA/video/'
-        args.video_name_mapping = '/ceph-g/lethao/datasets/msvd/youtube_mapping.txt'
+        args.annotation_file = '/content/MSVD-QA/{}_qa.json'
+        args.video_dir = '/content/MSVD-QA/video/YouTubeClips/'
+        args.video_name_mapping = '/content/youtube_mapping.txt'
         video_paths = msvd_qa.load_video_paths(args)
         random.shuffle(video_paths)
         # load model

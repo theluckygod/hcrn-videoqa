@@ -1,4 +1,4 @@
-gpu_id: 3
+gpu_id: 0
 multi_gpus: False
 num_workers: 4
 seed: 666
@@ -27,4 +27,4 @@ dataset:
   name: 'msvd-qa'
   question_type: 'none'
   data_dir: 'data/msvd-qa'
-  save_dir: 'results/'
+  save_dir: '/content/drive/MyDrive/DFColab/VideoQA/results/'
