@@ -227,8 +227,8 @@ if __name__ == '__main__':
 
     # annotation files
     if args.dataset == 'tgif-qa':
-        args.annotation_file = '/ceph-g/lethao/datasets/tgif-qa/csv/Total_{}_question.csv'
-        args.video_dir = '/ceph-g/lethao/datasets/tgif-qa/gifs'
+        args.annotation_file = '/content/tgif-qa/csv/Total_{}_question.csv'
+        args.video_dir = '/content/tgif-qa/gifs'
         args.outfile = 'data/{}/{}/{}_{}_{}_feat.h5'
         video_paths = tgif_qa.load_video_paths(args)
         random.shuffle(video_paths)
@@ -240,8 +240,8 @@ if __name__ == '__main__':
         generate_h5(model, video_paths, args.num_clips,
                     args.outfile.format(args.dataset, args.question_type, args.dataset, args.question_type, args.feature_type))
     elif args.dataset == 'msrvtt-qa':
-        args.annotation_file = '/ceph-g/lethao/datasets/msrvtt/annotations/{}_qa.json'
-        args.video_dir = '/ceph-g/lethao/datasets/msrvtt/videos/'
+        args.annotation_file = '/content/msrvtt/annotations/{}_qa.json'
+        args.video_dir = '/content/msrvtt/videos/'
         video_paths = msrvtt_qa.load_video_paths(args)
         random.shuffle(video_paths)
         # load model
