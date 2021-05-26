@@ -15,6 +15,7 @@ from datautils import utils
 from datautils import tgif_qa
 from datautils import msrvtt_qa
 from datautils import msvd_qa
+from datautils import svqad_qa
 
 
 def build_resnet():
@@ -35,8 +36,8 @@ def build_resnext():
                               last_fc=False)
     model = model.cuda()
     model = nn.DataParallel(model, device_ids=None)
-    assert os.path.exists('preprocess/pretrained/resnext-101-kinetics.pth')
-    model_data = torch.load('preprocess/pretrained/resnext-101-kinetics.pth', map_location='cpu')
+    assert os.path.exists('data/preprocess/pretrained/resnext-101-kinetics.pth')
+    model_data = torch.load('data/preprocess/pretrained/resnext-101-kinetics.pth', map_location='cpu')
     model.load_state_dict(model_data['state_dict'])
     model.eval()
     return model
@@ -198,7 +199,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu_id', type=int, default=2, help='specify which gpu will be used')
     # dataset info
-    parser.add_argument('--dataset', default='tgif-qa', choices=['tgif-qa', 'msvd-qa', 'msrvtt-qa'], type=str)
+    parser.add_argument('--dataset', default='tgif-qa', choices=['tgif-qa', 'msvd-qa', 'msrvtt-qa', 'svqad-qa'], type=str)
     parser.add_argument('--question_type', default='none', choices=['frameqa', 'count', 'transition', 'action', 'none'], type=str)
     # output
     parser.add_argument('--out', dest='outfile',
@@ -257,6 +258,20 @@ if __name__ == '__main__':
         args.video_dir = '/content/MSVD-QA/video/YouTubeClips/'
         args.video_name_mapping = '/content/youtube_mapping.txt'
         video_paths = msvd_qa.load_video_paths(args)
+        random.shuffle(video_paths)
+        # load model
+        if args.model == 'resnet101':
+            model = build_resnet()
+        elif args.model == 'resnext101':
+            model = build_resnext()
+        generate_h5(model, video_paths, args.num_clips,
+                    args.outfile.format(args.dataset, args.dataset, args.feature_type))
+
+    elif args.dataset == 'svqad-qa':
+        args.annotation_file = '/content/SurveillanceVideoQA_ver2.0/{}_qa.json'
+        args.video_dir = '/content/SurveillanceVideoQA_ver2.0/video/'
+        args.video_name_mapping = '/content/SurveillanceVideoQA_ver2.0/clipMapping.txt'
+        video_paths = svqad_qa.load_video_paths(args)
         random.shuffle(video_paths)
         # load model
         if args.model == 'resnet101':

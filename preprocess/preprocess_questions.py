@@ -5,10 +5,14 @@ import os
 from datautils import tgif_qa
 from datautils import msrvtt_qa
 from datautils import msvd_qa
+from datautils import svqad_qa
+
+import nltk
+nltk.download('punkt')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='tgif-qa', choices=['tgif-qa', 'msrvtt-qa', 'msvd-qa'], type=str)
+    parser.add_argument('--dataset', default='tgif-qa', choices=['tgif-qa', 'msrvtt-qa', 'msvd-qa', 'svqad-qa'], type=str)
     parser.add_argument('--answer_top', default=4000, type=int)
     parser.add_argument('--glove_pt',
                         help='glove pickle file, should be a map whose key are words and value are word vectors represented by numpy arrays. Only needed in train mode')
@@ -45,3 +49,9 @@ if __name__ == '__main__':
         if not os.path.exists('data/{}'.format(args.dataset)):
             os.makedirs('data/{}'.format(args.dataset))
         msvd_qa.process_questions(args)
+    elif args.dataset == 'svqad-qa':
+        args.annotation_file = '/content/SurveillanceVideoQA_ver2.0/{}_qa.json'.format(args.mode)
+        # check if data folder exists
+        if not os.path.exists('data/{}'.format(args.dataset)):
+            os.makedirs('data/{}'.format(args.dataset))
+        svqad_qa.process_questions(args)
