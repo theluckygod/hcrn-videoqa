@@ -84,7 +84,7 @@ if __name__ == '__main__':
     if args.cfg_file is not None:
         cfg_from_file(args.cfg_file)
 
-    assert cfg.dataset.name in ['tgif-qa', 'msrvtt-qa', 'msvd-qa']
+    assert cfg.dataset.name in ['tgif-qa', 'msrvtt-qa', 'msvd-qa', 'svqad-qa']
     assert cfg.dataset.question_type in ['frameqa', 'count', 'transition', 'action', 'none']
     # check if the data folder exists
     assert os.path.exists(cfg.dataset.data_dir)
