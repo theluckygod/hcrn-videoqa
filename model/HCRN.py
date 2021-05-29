@@ -64,7 +64,7 @@ class InputUnitLinguistic(nn.Module):
         """
         questions_embedding = self.encoder_embed(questions)  # (batch_size, seq_len, dim_word)
         embed = self.tanh(self.embedding_dropout(questions_embedding))
-        embed = nn.utils.rnn.pack_padded_sequence(embed, question_len, batch_first=True,
+        embed = nn.utils.rnn.pack_padded_sequence(embed, question_len.cpu(), batch_first=True,
                                                   enforce_sorted=False)
 
         self.encoder.flatten_parameters()
