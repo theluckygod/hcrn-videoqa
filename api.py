@@ -9,6 +9,13 @@ import skvideo.io
 import os
 import base64
 import time
+import threading
+from queue import Empty, Queue
+
+BATCH_SIZE = 1
+BATCH_TIMEOUT = 0.01
+CHECK_INTERVAL = 0.01
+requests_queue = Queue()
 
 app = Flask(__name__)
 api = Api(app)
@@ -36,31 +43,49 @@ parser.add_argument('video', help='Video (.mp4) input -- type=string base64_enco
 parser.add_argument('data_type', help='Format of dataset -- type=string')
 parser.add_argument('ques', help='Question input -- type=string')
 
+def handle_requests():
+    """
+    This function handle requests.
+    """
+    while True:
+        requests_batch = []
+        while not (
+            len(requests_batch) > BATCH_SIZE or
+            (len(requests_batch) > 0 and time.time() - requests_batch[0]['time'] > BATCH_TIMEOUT)
+        ):
+            try:
+                requests_batch.append(requests_queue.get(timeout=CHECK_INTERVAL))
+            except Empty:
+                continue
+        quess = [request['input']['ques'] for request in requests_batch]
+        data_types = [request['input']['data_type'] for request in requests_batch]
+        video_datas = [request['input']['video'] for request in requests_batch]
 
-# Todo
-class Inference(Resource):
-    def post(self):
-        print("\n\n--------------------------")
+        try:
+            ques = quess[0]
+            data_type = data_types[0]
+            video_data = video_datas[0]
+            request = requests_batch[0]
+            print("\n\n--------------------------")
+            video_data = base64.b64decode(video_data)
 
-        args = parser.parse_args()
-        ques, data_type, video_data = args['ques'], args['data_type'], args['video']
-        video_data = base64.b64decode(video_data)
-
-        abort_if_config_doesnt_exist(data_type)
-
-        tfile = tempfile.NamedTemporaryFile(delete=False) 
-        tfile.write(video_data)
-        video_path = (tfile.name).replace('\\', '/')
-        tfile.close()
-        os.rename(video_path, video_path + ".mp4")
-        video_path = video_path + ".mp4"
-        print("Saved a video to", video_path)
+            tfile = tempfile.NamedTemporaryFile(delete=False) 
+            tfile.write(video_data)
+            video_path = (tfile.name).replace('\\', '/')
+            tfile.close()
+            os.rename(video_path, video_path + ".mp4")
+            video_path = video_path + ".mp4"
+            print("Saved a video to", video_path)
+        except:
+            print("Cannot save video {video_path}!!!")
+            continue
 
         video_data = None
         try:
             video_data = skvideo.io.vread(video_path)
         except:
             print('Cannot read {} as video'.format(video_path))
+            continue
 
         print("Question:", ques)
 
@@ -72,14 +97,34 @@ class Inference(Resource):
                 data = inference_e2e(data_type_conf[data_type], motion_model, appr_model, vocab, model, video_data, ques)
                 print("--- inference time: %s seconds ---" % (time.time() - start_time))
                 print("Answer:", data)
-                return {"answer": data}, 201
+                request['output'] = data
             except:
                 print("Fail to infer")
-                return None, 403
+                request['output'] = "Fail"
+                continue        
 
-        print("Something goes wrong")
-        return None, 403
+threading.Thread(target=handle_requests).start()
 
+# Todo
+class Inference(Resource):
+    def post(self):
+        args = parser.parse_args()
+        ques, data_type, video_data = args['ques'], args['data_type'], args['video']
+        abort_if_config_doesnt_exist(data_type)
+        
+        crequest = {'input': args, 'time': time.time()}
+        requests_queue.put(crequest)
+
+        
+        while 'output' not in crequest:
+            time.sleep(CHECK_INTERVAL)
+
+        data = crequest['output']
+
+        if not isinstance(data, str) or (isinstance(data, str) and data == "Fail") :
+            return {"answer": None}, 403 # Fail to infer
+            
+        return {"answer": data}, 201 # infer successfully
 
 ##
 ## Actually setup the Api resource routing here
