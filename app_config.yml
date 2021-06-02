@@ -1,0 +1,17 @@
+path_to_configs: 'configs/'
+conf_folder: 'configs/'
+gpu_id: 0
+multi_gpus: True
+
+available_vqa_model:
+  - svqad_qa
+  
+data_format_default: 'svqad_qa'
+data_format_values:
+  - msrvtt_qa
+  - msvd_qa
+  - svqad_qa
+  - tgif_qa_action
+  - tgif_qa_count
+  - tgif_qa_frameqa
+  - tgif_qa_transition

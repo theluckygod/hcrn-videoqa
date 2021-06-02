@@ -23,6 +23,17 @@ test:
   test_num: 0
   write_preds: False
 
+inference:
+  device: 'cuda'
+  num_clips: 8
+  num_frames_per_clip: 16
+  appr_image_height: 224
+  appr_image_width: 224
+  motion_image_height: 112
+  motion_image_width: 112
+  vocab_json: 'data/svqad/svqad-qa_vocab.json'
+  ckpt_path: "results/expSVQAD-QA/ckpt/model.pt"
+
 dataset:
   name: 'svqad-qa'
   question_type: 'none'

@@ -3,8 +3,11 @@ h5py
 nltk
 numpy
 Pillow
-torch==1.2.0
-torchvision==0.2.1
+torch
+torchvision
 tqdm
 termcolor
 pyyaml
+streamlit
+flask
+flask-restful
