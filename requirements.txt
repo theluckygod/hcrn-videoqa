@@ -11,3 +11,6 @@ pyyaml
 streamlit
 flask
 flask-restful
+pandas
+scipy==1.1.0
+scikit-video

@@ -7,9 +7,10 @@
 3. [Experiments with TGIF-QA](#TGIF)
 4. [Experiments with MSRVTT-QA and MSVD-QA](#MSRVTT&MSVD)
 5. [Experiments with SVQAD-QA](#SVQAD)
-6. [Demo with Flask + Streamlit](#demo)
-7. [Citations](#citations)
-8. [Acknowledgement](#acknowledgement)
+6. [Quick experiment](#quick_experiment)
+7. [Demo with Flask + Streamlit](#demo)
+8. [Citations](#citations)
+9. [Acknowledgement](#acknowledgement)
 
 ## Introduction <a name="introduction"></a>
 We introduce a general-purpose reusable neural unit called Conditional Relation Network (CRN) that encapsulates and transforms an array of tensorial objects into a new array of the same kind, conditioned on a contextual feature. The flexibility of CRN units is then examined in solving Video Question Answering, a challenging problem requiring joint comprehension of video content and natural language processing.
@@ -155,6 +156,8 @@ To evaluate the trained model, run the following:
 python validate.py --cfg configs/svqad.yml
 ```
 
+## Quick experiment <a name="quick_experiment"></a>
+We supply a quick experiment on [colab](https://colab.research.google.com/drive/1Xbg7KmprqS2JDg7tCNd0g11mHzkeqCva?usp=sharing)
 ## Demo with Flask + Streamlit <a name="SVQAD"></a>
 
 Setup and download pretrained model
