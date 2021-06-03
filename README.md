@@ -120,7 +120,7 @@ To evaluate the trained model, run the following:
 python validate.py --cfg configs/msrvtt_qa.yml
 ```
 
-## Experiments with SVQAD-QA <a name="MSRVTT&MSVD"></a>
+## Experiments with SVQAD-QA <a name="SVQAD"></a>
 #### Introduction the new surveillance dataset for VideoQA
 TODO
 
@@ -157,8 +157,8 @@ python validate.py --cfg configs/svqad.yml
 ```
 
 ## Quick experiment <a name="quick_experiment"></a>
-We supply a quick experiment on [colab](https://colab.research.google.com/drive/1Xbg7KmprqS2JDg7tCNd0g11mHzkeqCva?usp=sharing)
-## Demo with Flask + Streamlit <a name="SVQAD"></a>
+We supply a quick experiment on [colab](https://colab.research.google.com/drive/1Xbg7KmprqS2JDg7tCNd0g11mHzkeqCva?usp=sharing) or a quick demo on [colab](https://colab.research.google.com/drive/1XSze7kNOVujgKt7sJNHPUbv4LytOSDsu?usp=sharing)
+## Demo with Flask + Streamlit <a name="demo"></a>
 
 Setup and download pretrained model
 ```bash
